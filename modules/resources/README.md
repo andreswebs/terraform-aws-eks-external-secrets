@@ -1,22 +1,17 @@
-# terraform-aws-eks-external-secrets
+# terraform-aws-eks-external-secrets resources
 
 [//]: # (BEGIN_TF_DOCS)
-Deploys [external-secrets](https://github.com/external-secrets/kubernetes-external-secrets/blob/master/charts/kubernetes-external-secrets/README.md) on AWS EKS.
+Deploys the external-secrets Helm cbart
 
 ## Usage
 
 Example:
 
 ```hcl
-module "external_secrets" {
-  source                = "github.com/andreswebs/terraform-aws-eks-external-secrets"
-  cluster_oidc_provider = var.eks_cluster_oidc_provider
-  iam_role_name         = "external-secrets-${var.eks_cluster_id}"
-  secret_names = [
-    "password",
-    "token",
-    "etc"
-  ]
+module "external_secrets_resources" {
+  source                         = "github.com/andreswebs/terraform-aws-eks-external-secrets//modules/resources"
+  iam_role_arn                   = var.iam_role_arn
+  chart_version_external_secrets = var.chart_version_external_secrets
 }
 ```
 
@@ -45,17 +40,13 @@ module "external_secrets" {
 | <a name="input_helm_verify"></a> [helm\_verify](#input\_helm\_verify) | Verify the package before installing it. Helm uses a provenance file to verify the integrity of the chart | `bool` | `false` | no |
 | <a name="input_helm_wait_for_completion"></a> [helm\_wait\_for\_completion](#input\_helm\_wait\_for\_completion) | Wait until all resources are in a ready state before marking the release as successful ? | `bool` | `true` | no |
 | <a name="input_helm_wait_for_jobs"></a> [helm\_wait\_for\_jobs](#input\_helm\_wait\_for\_jobs) | Wait until all Jobs have been completed before marking the release as successful ? | `bool` | `true` | no |
-| <a name="input_iam_role_name"></a> [iam\_role\_name](#input\_iam\_role\_name) | Name of the IAM role used by the external-secrets Kubernetes service account | `string` | `"external-secrets"` | no |
-| <a name="input_k8s_namespace"></a> [k8s\_namespace](#input\_k8s\_namespace) | Kubernetes namespace on which to install resources | `string` | `"external-secrets"` | no |
-| <a name="input_k8s_sa_name"></a> [k8s\_sa\_name](#input\_k8s\_sa\_name) | Name of the Kubernetes service account for external-secrets | `string` | `"external-secrets"` | no |
-| <a name="input_secret_names"></a> [secret\_names](#input\_secret\_names) | List of friendly names of the allowed secrets | `list(string)` | n/a | yes |
+| <a name="input_iam_role_name"></a> [iam\_role\_name](#input\_iam\_role\_name) | Name of the IAM role used by the Kubernetes service account | `string` | `"external-secrets"` | no |
+| <a name="input_k8s_namespace"></a> [k8s\_namespace](#input\_k8s\_namespace) | Name of the Kubernetes namespace for cert-manager | `string` | `"external-secrets"` | no |
+| <a name="input_k8s_sa_name"></a> [k8s\_sa\_name](#input\_k8s\_sa\_name) | Name of the Kubernetes service account for cert-manager | `string` | `"external-secrets"` | no |
 
 ## Modules
 
-| Name | Source | Version |
-|------|--------|---------|
-| <a name="module_iam"></a> [iam](#module\_iam) | ./modules/iam | n/a |
-| <a name="module_resources"></a> [resources](#module\_resources) | ./modules/resources | n/a |
+No modules.
 
 ## Outputs
 
@@ -67,7 +58,9 @@ module "external_secrets" {
 
 ## Providers
 
-No providers.
+| Name | Version |
+|------|---------|
+| <a name="provider_helm"></a> [helm](#provider\_helm) | >= 2.2.0 |
 
 ## Requirements
 
@@ -79,14 +72,8 @@ No providers.
 
 ## Resources
 
-No resources.
+| Name | Type |
+|------|------|
+| [helm_release.this](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
 
 [//]: # (END_TF_DOCS)
-
-## Authors
-
-**Andre Silva** - [@andreswebs](https://github.com/andreswebs)
-
-## License
-
-This project is licensed under the [Unlicense](UNLICENSE.md).
