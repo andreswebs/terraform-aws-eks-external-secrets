@@ -1,4 +1,4 @@
-securityContext
+securityContext:
   fsGroup: 65534 
   
 serviceAccount
