@@ -18,7 +18,6 @@ module "external_secrets_iam" {
     "etc"
   ]
 }
-
 ```
 
 
